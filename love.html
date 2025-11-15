@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOVE FOR JIWA</title>
+    <style>
+        /*
+         * 1. RESET DAN PENGATURAN TATA LETAK UTAMA
+         * Memastikan tinggi 100% dan menggunakan Flexbox untuk sentralisasi penuh
+         */
+        body {
+            /* Reset margin bawaan browser */
+            margin: 0;
+            /* Memastikan body menempati seluruh viewport */
+            height: 100vh;
+            /* Menentukan warna latar belakang halaman */
+            background-color: #f4f4f4;
+            
+            /* Menggunakan Flexbox untuk memusatkan elemen hati (secara horizontal dan vertikal) */
+            display: flex;
+            justify-content: center; /* Pusat horizontal */
+            align-items: center; /* Pusat vertikal */
+            
+            /* Font untuk konteks, walau tidak wajib untuk bentuk hati */
+            font-family: sans-serif;
+            overflow: hidden; /* Mencegah scrollbar jika elemen terlalu besar */
+        }
+
+        /* * 2. KONTAINER HATI UTAMA
+         * Elemen ini akan menjadi bagian bawah hati (persegi yang diputar)
+         */
+        .heart {
+            /* Warna solid untuk bentuk hati sesuai permintaan */
+            background-color: #e74c3c;
+            
+            /* Ukuran dasar hati: 240px x 240px. 
+             * Menggunakan vmin untuk responsivitas relatif terhadap ukuran viewport.
+             * 60vmin akan berukuran 60% dari dimensi terkecil viewport (tinggi/lebar).
+             * Max-width membatasi ukuran maksimal agar tidak terlalu besar di layar lebar.
+             */
+            width: 60vmin;
+            height: 60vmin;
+            max-width: 240px;
+            max-height: 240px;
+            
+            /* Memutar elemen sebesar 45 derajat. Ini membentuk bagian bawah (segitiga) hati */
+            transform: rotate(-45deg);
+            
+            /* Mengatur posisi untuk pseudo-elemen anak */
+            position: relative;
+            
+            /* Transisi untuk efek hover dan detak jantung */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            
+            /* Mengatur origin transform untuk animasi scale agar terpusat */
+            transform-origin: center center;
+
+            /* Animasi detak jantung */
+            animation: beat 1.4s infinite cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        /* * 3. PSEUDO-ELEMEN ::before (Bagian Atas Kiri)
+         * Membuat lingkaran di sisi atas kiri dari elemen utama yang diputar
+         */
+        .heart::before {
+            content: ""; /* Konten wajib untuk pseudo-elemen */
+            
+            /* Mengambil properti visual yang sama dengan elemen induk */
+            background-color: #e74c3c;
+            
+            /* Ukuran sama dengan elemen induk */
+            width: 100%;
+            height: 100%;
+            
+            /* Membuat bentuk lingkaran/setengah lingkaran di bagian atas kiri */
+            border-radius: 50%;
+            
+            /* Mengatur posisi. Pindah ke atas elemen induk */
+            position: absolute;
+            top: -50%;
+            left: 0;
+            
+            /* Penting: Memutar balik elemen sebesar +45 derajat agar bentuk lingkaran tidak ikut miring */
+            transform: rotate(45deg);
+            
+            /* Inherit transisi dari induk agar efek highlight juga berlaku */
+            transition: inherit;
+        }
+
+        /* * 4. PSEUDO-ELEMEN ::after (Bagian Atas Kanan)
+         * Membuat lingkaran di sisi atas kanan dari elemen utama yang diputar
+         */
+        .heart::after {
+            content: ""; /* Konten wajib untuk pseudo-elemen */
+            
+            /* Mengambil properti visual yang sama dengan elemen induk */
+            background-color: #e74c3c;
+            
+            /* Ukuran sama dengan elemen induk */
+            width: 100%;
+            height: 100%;
+            
+            /* Membuat bentuk lingkaran/setengah lingkaran di bagian atas kanan */
+            border-radius: 50%;
+            
+            /* Mengatur posisi. Pindah ke kanan elemen induk */
+            position: absolute;
+            top: 0;
+            left: 50%;
+            
+            /* Penting: Memutar balik elemen sebesar +45 derajat agar bentuk lingkaran tidak ikut miring */
+            transform: rotate(45deg);
+            
+            /* Inherit transisi dari induk agar efek highlight juga berlaku */
+            transition: inherit;
+        }
+        
+        /* * 6. ANIMASI DETAK JANTUNG
+         * Keyframes untuk efek detak jantung halus
+         */
+        @keyframes beat {
+            0%, 100% {
+                transform: rotate(-45deg) scale(1); /* Ukuran normal */
+            }
+            15% {
+                transform: rotate(-45deg) scale(1.05); /* Sedikit membesar */
+            }
+            30% {
+                transform: rotate(-45deg) scale(0.98); /* Sedikit mengecil */
+            }
+            45% {
+                transform: rotate(-45deg) scale(1.03); /* Sedikit membesar lagi */
+            }
+        }
+
+        /* * 7. PREFERENSI PENGGUNA (prefers-reduced-motion)
+         * Menonaktifkan animasi jika pengguna memiliki preferensi untuk gerakan yang dikurangi
+         */
+        @media (prefers-reduced-motion: reduce) {
+            .heart {
+                animation: none; /* Menonaktifkan animasi detak jantung */
+                transition: none; /* Menonaktifkan transisi untuk semua properti */
+            }
+
+            .heart:hover {
+                /* Hanya terapkan skala dan box-shadow tanpa transisi jika animasi dinonaktifkan */
+                transform: rotate(-45deg) scale(1.06);
+                box-shadow: 0 0 30px rgba(231, 76, 60, 0.7);
+            }
+
+            .heart:hover::before,
+            .heart:hover::after {
+                 box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.4);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="heart"></div>
+</body>
+</html>
